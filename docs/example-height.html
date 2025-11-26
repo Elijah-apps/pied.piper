@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+	<script src="../src/importmap.js"></script>
+</head>
+
+<body>
+	<script type="module">
+
+	import * as THREE from 'three';
+	import { createStage, Mannequin } from 'mannequin';
+
+	createStage( animate );
+
+	var n = 10;
+	var people = [];
+
+	// creating several figures
+	for ( var i = 0; i < n; i++ ) {
+
+		var feminine = Math.random() > 0.5,
+			height = THREE.MathUtils.randFloat( 0.5, 1.7 ),
+			person = new Mannequin( feminine, height );
+
+		person.position.x = 1.5 * Math.cos( i / n * 2*Math.PI );
+		person.position.z = 1.5 * Math.sin( i / n * 2*Math.PI );
+		person.turn = 180 - i / n * 360;
+		people.push( person );
+
+	}
+
+	// animating the figures
+	function animate( t ) {
+
+		for ( var i = 0; i < people.length; i++ ) {
+
+			people[ i ].head.turn = -45 * Math.sin( 2*t + i );
+			people[ i ].torso.turn = -45 * Math.sin( 2*t + i );
+			people[ i ].l_elbow.bend = 30 + 30 * Math.sin( t + i );
+			people[ i ].r_elbow.bend = 30 + 30 * Math.sin( t + i );
+	
+			people[ i ].l_ankle.bend = -30 + 30 * Math.sin( 4*t + i );
+			people[ i ].r_ankle.bend = -30 + 30 * Math.sin( 4*t + i );
+
+			people[ i ].stepOnGround();
+
+		}
+
+	}
+
+	</script>
+</body>
+</html>
